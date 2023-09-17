@@ -1,9 +1,6 @@
 vpcs = ["main", "database"]
 
-new_vpcs = []
-for name in vpcs:
-    new_vpcs.append(name.title())
-
+new_vpcs = [name.title() for name in vpcs]
 print(new_vpcs)
 
 new_v2_vpcs = [vpc.title() for vpc in vpcs]

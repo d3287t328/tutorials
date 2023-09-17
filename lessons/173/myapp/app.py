@@ -30,15 +30,11 @@ def metrics():
 
 @app.route('/version', methods=['GET'])
 def get_version():
-    status = 201
-
     start = time.time()
     sleep(max_latency)
     end = time.time() - start
 
-    if random.random() < error_rate:
-        status = 404
-
+    status = 404 if random.random() < error_rate else 201
     request_duration.labels(status).observe(end)
 
     return {'version': version}, status

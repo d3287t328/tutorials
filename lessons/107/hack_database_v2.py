@@ -11,8 +11,7 @@ def hash(password):
 def get_wordlist(url):
     try:
         with urlopen(url) as f:
-            wordlist = f.read().decode('utf-8').splitlines()
-            return wordlist
+            return f.read().decode('utf-8').splitlines()
     except Exception as e:
         print(f'failed to get wordlist: {e}')
         exit(1)
@@ -23,8 +22,7 @@ def get_users(path):
         result = []
         with open(path) as f:
             reader = csv.DictReader(f, delimiter=',')
-            for row in reader:
-                result.append(dict(row))
+            result.extend(dict(row) for row in reader)
             return result
     except Exception as e:
         print(f'failed to get users: {e}')
@@ -36,8 +34,7 @@ def get_rainbow_table(path):
         result = []
         with open(path) as f:
             reader = csv.DictReader(f, delimiter=',')
-            for row in reader:
-                result.append(dict(row))
+            result.extend(dict(row) for row in reader)
             return result
     except Exception as e:
         print(f'failed to get rainbow table: {e}')

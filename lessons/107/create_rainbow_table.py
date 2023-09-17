@@ -6,8 +6,7 @@ from urllib.request import urlopen
 def get_wordlist(url):
     try:
         with urlopen(url) as f:
-            wordlist = f.read().decode('utf-8').splitlines()
-            return wordlist
+            return f.read().decode('utf-8').splitlines()
     except Exception as e:
         print(f'failed to get wordlist: {e}')
         exit(1)
