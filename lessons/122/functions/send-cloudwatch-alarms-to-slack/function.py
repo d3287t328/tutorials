@@ -7,17 +7,15 @@ http = urllib3.PoolManager()
 
 
 def get_alarm_attributes(sns_message):
-    alarm = dict()
-
-    alarm['name'] = sns_message['AlarmName']
-    alarm['description'] = sns_message['AlarmDescription']
-    alarm['reason'] = sns_message['NewStateReason']
-    alarm['region'] = sns_message['Region']
-    alarm['instance_id'] = sns_message['Trigger']['Dimensions'][0]['value']
-    alarm['state'] = sns_message['NewStateValue']
-    alarm['previous_state'] = sns_message['OldStateValue']
-
-    return alarm
+    return {
+        'name': sns_message['AlarmName'],
+        'description': sns_message['AlarmDescription'],
+        'reason': sns_message['NewStateReason'],
+        'region': sns_message['Region'],
+        'instance_id': sns_message['Trigger']['Dimensions'][0]['value'],
+        'state': sns_message['NewStateValue'],
+        'previous_state': sns_message['OldStateValue'],
+    }
 
 
 def register_alarm(alarm):

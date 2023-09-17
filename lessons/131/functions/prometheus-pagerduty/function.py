@@ -9,17 +9,15 @@ http = urllib3.PoolManager()
 
 
 def get_alarm_attributes(alert):
-    alarm = dict()
-
-    alarm['name'] = alert['labels']['alertname']
-    alarm['summary'] = alert['annotations']['summary']
-    alarm['description'] = alert['annotations']['description']
-    alarm['instance'] = alert['labels']['instance']
-    alarm['state'] = alert['status']
-    alarm['severity'] = alert['labels']['severity']
-    alarm['timestamp'] = alert['startsAt']
-
-    return alarm
+    return {
+        'name': alert['labels']['alertname'],
+        'summary': alert['annotations']['summary'],
+        'description': alert['annotations']['description'],
+        'instance': alert['labels']['instance'],
+        'state': alert['status'],
+        'severity': alert['labels']['severity'],
+        'timestamp': alert['startsAt'],
+    }
 
 
 def generate_alarm_message(alarm, environment):

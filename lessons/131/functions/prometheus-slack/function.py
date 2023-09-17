@@ -7,17 +7,15 @@ http = urllib3.PoolManager()
 
 
 def get_alarm_attributes(alert):
-    alarm = dict()
-
-    alarm['name'] = alert['labels']['alertname']
-    alarm['summary'] = alert['annotations']['summary']
-    alarm['description'] = alert['annotations']['description']
-    alarm['instance'] = alert['labels']['instance']
-    alarm['state'] = alert['status']
-    alarm['severity'] = alert['labels']['severity']
-    alarm['timestamp'] = alert['startsAt']
-
-    return alarm
+    return {
+        'name': alert['labels']['alertname'],
+        'summary': alert['annotations']['summary'],
+        'description': alert['annotations']['description'],
+        'instance': alert['labels']['instance'],
+        'state': alert['status'],
+        'severity': alert['labels']['severity'],
+        'timestamp': alert['startsAt'],
+    }
 
 
 def generate_alarm_message(alarm, environment):
@@ -35,48 +33,44 @@ def generate_alarm_message(alarm, environment):
                 "text": {
                     "type": "plain_text",
                     "text": text,
-                }
+                },
             },
+            {"type": "divider"},
             {
-                "type": "divider"
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "*" + alarm['summary'] + "*",
+                },
+                "block_id": "summary",
             },
             {
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "*" + alarm['summary'] + "*"
+                    "text": "_" + alarm['description'] + "_",
                 },
-                "block_id": "summary"
+                "block_id": "description",
             },
-            {
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": "_" + alarm['description'] + "_"
-                },
-                "block_id": "description"
-            },
-            {
-                "type": "divider"
-            },
+            {"type": "divider"},
             {
                 "type": "context",
                 "elements": [
                     {
                         "type": "mrkdwn",
-                        "text": "Instance: *" + alarm['instance'] + "*"
+                        "text": "Instance: *" + alarm['instance'] + "*",
                     },
                     {
                         "type": "mrkdwn",
-                        "text": "Severity: *" + alarm['severity'] + "*"
+                        "text": "Severity: *" + alarm['severity'] + "*",
                     },
                     {
                         "type": "mrkdwn",
-                        "text": "Environment: *" + environment + "*"
-                    }
-                ]
-            }
-        ]
+                        "text": f"Environment: *{environment}*",
+                    },
+                ],
+            },
+        ],
     }
 
 
